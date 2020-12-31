@@ -9,5 +9,8 @@
     <color name="navigationBarColor">@android:color/black</color>
     <color name="drawerArrowColor">@android:color/white</color>
 
-    <color name="mainColor">#FF4081</color>
+    <color name="mainColor">#F5A4A2</color>
+
+    <color name="listItemText">#000000</color>
+    <color name="listItemCountText">#212121</color>
 </resources>

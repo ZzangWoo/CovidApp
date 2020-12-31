@@ -1,18 +1,20 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <style name="AppBaseTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="ListItemText">
+        <item name="android:textColor">@color/listItemText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:windowTranslucentStatus" tools:targetApi="19">true</item>
-
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="windowActionBar">false</item>
-
+    <style name="ListItemCountText">
+        <item name="android:textColor">@color/listItemCountText</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>
