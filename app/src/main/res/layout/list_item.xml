@@ -14,83 +14,101 @@
         android:layout_marginStart="18.3dp"
         android:layout_marginEnd="18.7dp"
         android:layout_marginTop="11dp"
-        card_view:cardCornerRadius="17dp"
-        android:layout_margin="10dp"
-        android:background="#F8BBD0">
+        card_view:cardCornerRadius="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        card_view:cardBackgroundColor="@color/cardBackground"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/countryNameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="나라이름"
-                android:textSize="20sp"
-                android:paddingTop="10dp"
-                android:paddingLeft="5dp"
-                style="@style/ListItemText"/>
+            <ImageView
+                android:id="@+id/statusImageView"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:padding="5dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/countryNameTextView"
-                android:paddingTop="5dp"
-                android:paddingLeft="5dp"
-                android:orientation="vertical">
+                android:layout_toRightOf="@+id/statusImageView">
+
+                <TextView
+                    android:id="@+id/countryNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="나라이름"
+                    android:textSize="20sp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="15dp"
+                    style="@style/ListItemText"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/confirmedTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:hint="확진자 수"
-                        style="@style/ListItemText"/>
-
-                    <TextView
-                        android:id="@+id/confirmedCountTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:hint="000000"
-                        android:paddingLeft="20dp"
-                        style="@style/ListItemCountText"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/countryNameTextView"
                     android:paddingTop="5dp"
-                    android:layout_marginBottom="10dp">
+                    android:paddingLeft="15dp"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/deathTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:hint="사망자 수"
-                        style="@style/ListItemText"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
 
-                    <TextView
-                        android:id="@+id/deathCountTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:hint="000000"
-                        android:paddingLeft="20dp"
-                        style="@style/ListItemCountText"/>
+                        <TextView
+                            android:id="@+id/confirmedTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:hint="확진자 수"
+                            style="@style/ListItemText"/>
+
+                        <TextView
+                            android:id="@+id/confirmedCountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:hint="000000"
+                            android:paddingLeft="20dp"
+                            style="@style/ListItemCountText"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:paddingTop="5dp"
+                        android:layout_marginBottom="10dp">
+
+                        <TextView
+                            android:id="@+id/deathTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:hint="사망자 수"
+                            style="@style/ListItemText"/>
+
+                        <TextView
+                            android:id="@+id/deathCountTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:hint="000000"
+                            android:paddingLeft="20dp"
+                            style="@style/ListItemCountText"/>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
+
+
 
         </RelativeLayout>
 

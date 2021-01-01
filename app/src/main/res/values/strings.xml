@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">CovidApp</string>
+    <string name="app_name">코로나 상태</string>
+
+
 </resources>

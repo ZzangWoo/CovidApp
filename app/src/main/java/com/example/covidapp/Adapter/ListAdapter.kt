@@ -1,10 +1,12 @@
 package com.example.covidapp.Adapter
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
@@ -29,6 +31,8 @@ class ListAdapter (val context: Context, val covidInfoList: ArrayList<CovidInfo>
         holder.confirmedCount.text = covidInfoList[position].confirmedCount.toString()
         holder.deathCount.text = covidInfoList[position].deathCount.toString()
 
+        holder.statusImageView.setImageResource(R.drawable.happy)
+
         holder.cardView.setOnClickListener {
             var toast = Toast.makeText(context, holder.countryName.text, Toast.LENGTH_SHORT)
             toast.show()
@@ -40,6 +44,7 @@ class ListAdapter (val context: Context, val covidInfoList: ArrayList<CovidInfo>
         val confirmedCount = itemView.findViewById<TextView>(R.id.confirmedCountTextView)
         val deathCount = itemView.findViewById<TextView>(R.id.deathCountTextView)
         val cardView = itemView.findViewById<CardView>(R.id.cardView)
+        val statusImageView = itemView.findViewById<ImageView>(R.id.statusImageView)
     }
 
 }
