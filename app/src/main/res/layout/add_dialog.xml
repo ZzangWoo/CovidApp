@@ -6,10 +6,24 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/titleTextView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/titleBarBackground">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="다이얼로그 타이틀"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+
 
     <Spinner
         android:id="@+id/listSpinner"
@@ -20,27 +34,29 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:entries="@array/country_array"/>
+        android:entries="@array/country_array"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
 
         <Button
             android:id="@+id/leftButton"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1">
-
-        </Button>
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/rightButton"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1">
-
-        </Button>
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

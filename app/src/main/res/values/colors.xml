@@ -12,8 +12,8 @@
     <color name="mainColor">#F5A4A2</color>
 
     <!-- Background Color -->
-    <color name="toppestBackground">@android:color/black</color>
-    <color name="titleBarBackground">@android:color/black</color>
+    <color name="toppestBackground">#84B1ED</color>
+    <color name="titleBarBackground">#84B1ED</color>
     <color name="mainBackground">#FFFFFF</color>
     <color name="cardBackground">#FFFFFF</color>
     <color name="floatingActionButtonBackgound">#F5F5F5</color>
