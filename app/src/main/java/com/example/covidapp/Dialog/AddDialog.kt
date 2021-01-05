@@ -2,6 +2,8 @@ package com.example.covidapp.Dialog
 
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.Window
 import android.widget.*
 import com.example.covidapp.R
@@ -14,6 +16,11 @@ class AddDialog (context: Context) {
     private lateinit var leftButton: Button
     private lateinit var rightButton: Button
     private lateinit var listener: AddDialogOKClickedListener
+
+    fun makeBorderCorner() {
+        dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dlg.window?.requestFeature(Window.FEATURE_NO_TITLE)
+    }
 
     fun start(content: String) {
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)

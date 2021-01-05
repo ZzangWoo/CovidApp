@@ -21,10 +21,8 @@ class MainActivity : AppCompatActivity() {
         testInitalize()
 
         addFloatingActionButton.setOnClickListener {
-            var toast = Toast.makeText(this, "Test", Toast.LENGTH_SHORT)
-            toast.show()
-
             val dlg = AddDialog(this)
+            dlg.makeBorderCorner()
             dlg.start("추가할 나라를 선택해주세요.")
         }
     }

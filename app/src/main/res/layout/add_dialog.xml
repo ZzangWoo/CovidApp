@@ -4,12 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/dialog_white_border">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/titleBarBackground">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/titleTextView"
@@ -18,9 +18,10 @@
             android:hint="다이얼로그 타이틀"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="5dp"
-            android:textColor="#FFFFFF"/>
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
@@ -37,26 +38,37 @@
         android:entries="@array/country_array"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp">
 
         <Button
             android:id="@+id/leftButton"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:hint="왼쪽버튼"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:background="@drawable/buttonshape"
+            />
 
         <Button
             android:id="@+id/rightButton"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:hint="오른쪽버튼"
+            android:background="#FFFFFF"
+            android:textSize="20sp"
+            android:textColor="#000000"/>
 
     </LinearLayout>
 
