@@ -4,9 +4,16 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.Window
 import android.widget.*
 import com.example.covidapp.R
+import com.example.covidapp.Room.Database.CovidDatabase
+import com.example.covidapp.Room.Entity.Country
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class AddDialog (context: Context) {
 
@@ -16,6 +23,8 @@ class AddDialog (context: Context) {
     private lateinit var leftButton: Button
     private lateinit var rightButton: Button
     private lateinit var listener: AddDialogOKClickedListener
+
+    private val context = context
 
     fun makeBorderCorner() {
         dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -27,6 +36,9 @@ class AddDialog (context: Context) {
         dlg.setContentView(R.layout.add_dialog)
         dlg.setCancelable(false)
 
+        // DB 객체 생성
+        val db = CovidDatabase.getInstance(context)
+
         titleTextView = dlg.findViewById(R.id.titleTextView)
         titleTextView.text = content
 
@@ -35,6 +47,16 @@ class AddDialog (context: Context) {
         leftButton = dlg.findViewById(R.id.leftButton)
         leftButton.text = "확인"
         leftButton.setOnClickListener {
+            try {
+                GlobalScope.launch(Dispatchers.IO) {
+                    db!!.countryDao().countryInsert(Country(listSpinner.selectedItem.toString()))
+
+                    Log.d("[DB 성공]", "Country : ${listSpinner.selectedItem.toString()}")
+                }
+            } catch (e: Exception) {
+                Log.e("[에러발생]", e.toString())
+            }
+
 
             dlg.dismiss()
         }
