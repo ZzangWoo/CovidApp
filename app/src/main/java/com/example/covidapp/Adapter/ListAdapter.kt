@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.covidapp.Entity.CovidInfo
 import com.example.covidapp.R
 
-class ListAdapter (val context: Context, val covidInfoList: ArrayList<CovidInfo>)
+class ListAdapter (val context: Context, var covidInfoList: MutableList<CovidInfo>)
     : RecyclerView.Adapter<ListAdapter.CardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.CardViewHolder {
         var inflater = LayoutInflater.from(context)
@@ -37,6 +37,12 @@ class ListAdapter (val context: Context, val covidInfoList: ArrayList<CovidInfo>
             var toast = Toast.makeText(context, holder.countryName.text, Toast.LENGTH_SHORT)
             toast.show()
         }
+    }
+
+    fun addItem(refreshCovidInfoList: MutableList<CovidInfo>) {
+        covidInfoList = mutableListOf()
+        covidInfoList = refreshCovidInfoList
+        notifyDataSetChanged()
     }
 
     class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

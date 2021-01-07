@@ -1,5 +1,6 @@
 package com.example.covidapp.Room.DAO
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -10,7 +11,10 @@ import com.example.covidapp.Room.Entity.Country
 @Dao
 interface CountryDAO {
     @Query("SELECT * FROM CountryTable")
-    suspend fun countrySelect() : List<Country>
+    fun countryLiveSelect() : LiveData<List<Country>>
+
+    @Query("SELECT * FROM CountryTable")
+    fun countrySelect() : List<Country>
 
     @Query("SELECT * FROM CountryTable WHERE countryName = :name")
     suspend fun countrySelectItem(name: String) : Country

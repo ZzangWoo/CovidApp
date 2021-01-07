@@ -5,6 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/titleBarBackground</item>
         <item name="colorPrimaryDark">@color/toppestBackground</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="ListItemText">
