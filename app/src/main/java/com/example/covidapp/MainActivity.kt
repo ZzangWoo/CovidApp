@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.PagerAdapter
 import com.example.covidapp.Adapter.ListAdapter
@@ -34,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         db = CovidDatabase.getInstance(this)
 
-        testInitalize()
+        //testInitalize()
 
         addFloatingActionButton.setOnClickListener {
             val dlg = AddDialog(this)
@@ -43,11 +42,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         refreshImageView.setOnClickListener {
-            testInitalize()
+
         }
 
-        db!!.countryDao().countryLiveSelect().observe(this, Observer {
-
+        db!!.countryDao().countryLiveSelect().observe(this, androidx.lifecycle.Observer {
+            var covidInfoList: MutableList<CovidInfo> = mutableListOf()
+            for (name in it) {
+                covidInfoList.add(CovidInfo(name.countryName, 0, 0))
+            }
+            adapter = ListAdapter(this, covidInfoList)
+            recyclerView.adapter = adapter
         })
     }
 
@@ -58,24 +62,26 @@ class MainActivity : AppCompatActivity() {
         try {
             adapter = ListAdapter(this, covidInfoList)
 
-//            GlobalScope.launch(Dispatchers.Default) {
-//                countryList = db!!.countryDao().countrySelect()
-//
-//                for (country in countryList) {
-//                    covidInfoList.add(CovidInfo(country.countryName, 0, 0))
-//                }
-//
-//                Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
-//            }
-            countryList = db!!.countryDao().countrySelect()
+            GlobalScope.launch(Dispatchers.Default) {
+                countryList = db!!.countryDao().countrySelect()
 
-            for (country in countryList) {
-                covidInfoList.add(CovidInfo(country.countryName, 0, 0))
+                for (country in countryList) {
+                    covidInfoList.add(CovidInfo(country.countryName, 0, 0))
+                }
+
+                Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
+                adapter?.addItem(covidInfoList)
+                recyclerView.adapter = adapter
             }
-
-            Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
-            adapter?.addItem(covidInfoList)
-            recyclerView.adapter = adapter
+//            countryList = db!!.countryDao().countrySelect()
+//
+//            for (country in countryList) {
+//                covidInfoList.add(CovidInfo(country.countryName, 0, 0))
+//            }
+//
+//            Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
+//            adapter?.addItem(covidInfoList)
+//            recyclerView.adapter = adapter
         } catch (e: Exception) {
 
         }

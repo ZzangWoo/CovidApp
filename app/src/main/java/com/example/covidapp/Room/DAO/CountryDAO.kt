@@ -11,10 +11,10 @@ import com.example.covidapp.Room.Entity.Country
 @Dao
 interface CountryDAO {
     @Query("SELECT * FROM CountryTable")
-    fun countryLiveSelect() : LiveData<List<Country>>
+    fun countryLiveSelect() : LiveData<MutableList<Country>>
 
     @Query("SELECT * FROM CountryTable")
-    fun countrySelect() : List<Country>
+    fun countrySelect() : MutableList<Country>
 
     @Query("SELECT * FROM CountryTable WHERE countryName = :name")
     suspend fun countrySelectItem(name: String) : Country
