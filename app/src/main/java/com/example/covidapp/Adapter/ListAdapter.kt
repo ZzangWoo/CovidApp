@@ -74,9 +74,7 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>)
                 toast.show()
             }
             itemView.statusImageView.setImageResource(R.drawable.happy)
-            itemView.refreshImageView.setOnClickListener {
-                
-            }
+            
         }
 
         fun editData(name: String) {
