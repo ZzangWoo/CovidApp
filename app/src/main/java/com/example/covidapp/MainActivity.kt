@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.PagerAdapter
 import com.example.covidapp.Adapter.ListAdapter
 import com.example.covidapp.Dialog.AddDialog
+import com.example.covidapp.Entity.CountryEntity.CountryName
 import com.example.covidapp.Entity.CovidInfo
 import com.example.covidapp.Room.Database.CovidDatabase
 import com.example.covidapp.Room.Entity.Country
@@ -48,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         db!!.countryDao().countryLiveSelect().observe(this, androidx.lifecycle.Observer {
             var covidInfoList: MutableList<CovidInfo> = mutableListOf()
             for (name in it) {
+                val index: Int = CountryName.countryList.indexOf(name.countryName)
+
                 covidInfoList.add(CovidInfo(name.countryName, 0, 0))
             }
             adapter = ListAdapter(this, covidInfoList)

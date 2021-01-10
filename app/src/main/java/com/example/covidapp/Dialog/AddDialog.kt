@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.Window
 import android.widget.*
+import com.example.covidapp.Entity.CountryEntity.CountryName
 import com.example.covidapp.R
 import com.example.covidapp.Room.Database.CovidDatabase
 import com.example.covidapp.Room.Entity.Country
@@ -43,6 +44,7 @@ class AddDialog (context: Context) {
         titleTextView.text = content
 
         listSpinner = dlg.findViewById(R.id.listSpinner)
+        listSpinner.adapter = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, CountryName.countryList)
 
         leftButton = dlg.findViewById(R.id.leftButton)
         leftButton.text = "확인"

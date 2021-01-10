@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cardView"
         android:layout_gravity="center"
         android:layout_width="match_parent"
@@ -31,28 +32,53 @@
                 android:layout_height="90dp"
                 android:padding="5dp"/>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/countryLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/statusImageView">
 
-                <TextView
-                    android:id="@+id/countryNameTextView"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="나라이름"
-                    android:textSize="20sp"
-                    android:paddingTop="10dp"
-                    android:paddingLeft="15dp"
-                    style="@style/ListItemText"/>
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/countryNameTextView"
+                        style="@style/ListItemText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:hint="나라이름"
+                        android:textSize="20sp"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/deleteImageView"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@android:drawable/ic_menu_delete"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/countryNameTextView"
+                    android:layout_marginStart="5dp"
+                    android:orientation="vertical"
                     android:paddingTop="5dp"
-                    android:paddingLeft="15dp"
-                    android:orientation="vertical">
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -61,52 +87,52 @@
 
                         <TextView
                             android:id="@+id/confirmedTextView"
+                            style="@style/ListItemText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="확진자 수"
-                            style="@style/ListItemText"/>
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/confirmedCountTextView"
+                            style="@style/ListItemCountText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="000000"
                             android:paddingLeft="20dp"
-                            style="@style/ListItemCountText"/>
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_weight="1"
-                        android:paddingTop="5dp"
-                        android:layout_marginBottom="10dp">
+                        android:paddingTop="5dp">
 
                         <TextView
                             android:id="@+id/deathTextView"
+                            style="@style/ListItemText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="사망자 수"
-                            style="@style/ListItemText"/>
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/deathCountTextView"
+                            style="@style/ListItemCountText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
                             android:hint="000000"
                             android:paddingLeft="20dp"
-                            style="@style/ListItemCountText"/>
+                            android:textSize="15sp" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

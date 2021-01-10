@@ -12,6 +12,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.covidapp.Entity.CountryEntity.CountryName
+import com.example.covidapp.Entity.CountryEntity.ISO2
+import com.example.covidapp.Entity.CountryEntity.Slug
 import com.example.covidapp.Entity.CovidInfo
 import com.example.covidapp.R
 import com.example.covidapp.Room.Database.CovidDatabase
@@ -70,7 +73,15 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>)
             itemView.confirmedCountTextView.setText(covidInfo.confirmedCount.toString())
             itemView.deathCountTextView.setText(covidInfo.deathCount.toString())
             itemView.cardView.setOnClickListener {
-                var toast = Toast.makeText(context, covidInfo.countryName, Toast.LENGTH_SHORT)
+                val index: Int = CountryName.countryList.indexOf(covidInfo.countryName)
+                val countryName = covidInfo.countryName
+                val slug = Slug.slugList[index]
+                val iso2 = ISO2.iso2List[index]
+
+                var toast = Toast.makeText(
+                    context,
+                    "CountryName : ${countryName}\nSlug : ${slug}\nISO2 : ${iso2}",
+                    Toast.LENGTH_SHORT)
                 toast.show()
             }
             itemView.statusImageView.setImageResource(R.drawable.happy)
