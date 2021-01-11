@@ -1,11 +1,8 @@
 package com.example.covidapp.Room.DAO
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
 import com.example.covidapp.Room.Entity.Country
 
 @Dao
@@ -20,7 +17,10 @@ interface CountryDAO {
     suspend fun countrySelectItem(name: String) : Country
 
     @Delete
-    suspend fun countryDelete(country: Country)
+    fun countryDelete(country: Country)
+
+    @Update
+    fun countryUpdate(country: Country)
 
     @Insert(onConflict = REPLACE)
     suspend fun countryInsert(country: Country)

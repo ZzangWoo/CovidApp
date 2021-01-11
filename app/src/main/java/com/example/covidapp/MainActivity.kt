@@ -1,5 +1,6 @@
 package com.example.covidapp
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.example.covidapp.Entity.CountryEntity.CountryName
 import com.example.covidapp.Entity.CountryEntity.ISO2
 import com.example.covidapp.Entity.CountryEntity.Slug
 import com.example.covidapp.Entity.CovidInfo
+import com.example.covidapp.Entity.LocaleEntity
 import com.example.covidapp.Repository.YesterdayCovidRepo
 import com.example.covidapp.Room.Database.CovidDatabase
 import com.example.covidapp.Room.Entity.Country
@@ -30,10 +32,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private var adapter: ListAdapter? = null
+    private var covidInfoList: MutableList<CovidInfo> = mutableListOf()
 
     private var db: CovidDatabase? = null
 
@@ -44,7 +49,12 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         db = CovidDatabase.getInstance(this)
 
-        //testInitalize()
+        // 기기 국가 설정
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            LocaleEntity.locale = applicationContext.resources.configuration.locales.get(0)
+        } else {
+            LocaleEntity.locale = applicationContext.resources.configuration.locale
+        }
 
         addFloatingActionButton.setOnClickListener {
             val dlg = AddDialog(this)
@@ -53,11 +63,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         refreshImageView.setOnClickListener {
-
+            if (covidInfoList != null && covidInfoList.size != 0) {
+                Thread {
+                    db!!.countryDao().countryUpdate(Country(covidInfoList[0].countryName))
+                }.start()
+            }
         }
 
+        // db 변동 감지 후 나라
         db!!.countryDao().countryLiveSelect().observe(this, androidx.lifecycle.Observer {
-            var covidInfoList: MutableList<CovidInfo> = mutableListOf()
+            covidInfoList = mutableListOf()
             var statsList: Map<String, WorldStats>? = null
 
             val builder = Retrofit.Builder()
@@ -82,53 +97,66 @@ class MainActivity : AppCompatActivity() {
                     val apiResult = response.body()
                     statsList = apiResult?.stats
 
+                    val currentDateTime = Calendar.getInstance()
+                    currentDateTime.time = Date()
+                    currentDateTime.add(Calendar.DATE, -1)
+
+                    var dateFormat = SimpleDateFormat("yyyy-MM-dd", LocaleEntity.locale).format(currentDateTime.time)
+
                     for (name in it) {
                         val index: Int = CountryName.countryList.indexOf(name.countryName)
                         val countryName = name.countryName
                         val slug = Slug.slugList[index]
                         val iso2 = ISO2.iso2List[index]
 
-                        covidInfoList.add(CovidInfo(name.countryName, statsList!![iso2]!!.casesDelta, statsList!![iso2]!!.deathsDelta))
+                        if (statsList!![iso2] != null) {
+                            covidInfoList.add(CovidInfo(name.countryName,
+                                dateFormat,
+                                statsList!![iso2]!!.cases,
+                                statsList!![iso2]!!.casesDelta,
+                                statsList!![iso2]!!.deaths,
+                                statsList!![iso2]!!.deathsDelta))
+                        }
 
                     }
 
-                    adapter = ListAdapter(applicationContext, covidInfoList)
+                    adapter = ListAdapter(applicationContext, covidInfoList, db!!)
                     recyclerView.adapter = adapter
                 }
             })
         })
     }
 
-    private fun testInitalize() {
-        var countryList: List<Country> = arrayListOf()
-        var covidInfoList: MutableList<CovidInfo> = mutableListOf()
-
-        try {
-            adapter = ListAdapter(this, covidInfoList)
-
-            GlobalScope.launch(Dispatchers.Default) {
-                countryList = db!!.countryDao().countrySelect()
-
-                for (country in countryList) {
-                    covidInfoList.add(CovidInfo(country.countryName, 0, 0))
-                }
-
-                Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
-                adapter?.addItem(covidInfoList)
-                recyclerView.adapter = adapter
-            }
-//            countryList = db!!.countryDao().countrySelect()
+//    private fun testInitalize() {
+//        var countryList: List<Country> = arrayListOf()
+//        var covidInfoList: MutableList<CovidInfo> = mutableListOf()
 //
-//            for (country in countryList) {
-//                covidInfoList.add(CovidInfo(country.countryName, 0, 0))
+//        try {
+//            adapter = ListAdapter(this, covidInfoList, db!!)
+//
+//            GlobalScope.launch(Dispatchers.Default) {
+//                countryList = db!!.countryDao().countrySelect()
+//
+//                for (country in countryList) {
+//                    covidInfoList.add(CovidInfo(country.countryName, 0, 0))
+//                }
+//
+//                Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
+//                adapter?.addItem(covidInfoList)
+//                recyclerView.adapter = adapter
 //            }
+////            countryList = db!!.countryDao().countrySelect()
+////
+////            for (country in countryList) {
+////                covidInfoList.add(CovidInfo(country.countryName, 0, 0))
+////            }
+////
+////            Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
+////            adapter?.addItem(covidInfoList)
+////            recyclerView.adapter = adapter
+//        } catch (e: Exception) {
 //
-//            Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
-//            adapter?.addItem(covidInfoList)
-//            recyclerView.adapter = adapter
-        } catch (e: Exception) {
-
-        }
-
-    }
+//        }
+//
+//    }
 }

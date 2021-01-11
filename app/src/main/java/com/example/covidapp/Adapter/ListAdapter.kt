@@ -18,6 +18,7 @@ import com.example.covidapp.Entity.CountryEntity.Slug
 import com.example.covidapp.Entity.CovidInfo
 import com.example.covidapp.R
 import com.example.covidapp.Room.Database.CovidDatabase
+import com.example.covidapp.Room.Entity.Country
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.add_dialog.view.*
@@ -26,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>)
+class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val db: CovidDatabase)
     : RecyclerView.Adapter<ListAdapter.CardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.CardViewHolder {
         var inflater = LayoutInflater.from(context)
@@ -70,7 +71,10 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>)
         fun bind(covidInfo: CovidInfo, position: Int) {
             index = position
             itemView.countryNameTextView.setText(covidInfo.countryName)
+            itemView.updatedDateTextView.setText(covidInfo.updatedDate)
+            itemView.wholeConfirmedCountTextView.setText(covidInfo.wholeConfirmedCount.toString())
             itemView.confirmedCountTextView.setText(covidInfo.confirmedCount.toString())
+            itemView.wholeDeathCountTextView.setText(covidInfo.wholeDeathCount.toString())
             itemView.deathCountTextView.setText(covidInfo.deathCount.toString())
             itemView.cardView.setOnClickListener {
                 val index: Int = CountryName.countryList.indexOf(covidInfo.countryName)
@@ -85,13 +89,16 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>)
                 toast.show()
             }
             itemView.statusImageView.setImageResource(R.drawable.happy)
-            
+            itemView.deleteImageView.setOnClickListener {
+                deleteData()
+            }
         }
 
-        fun editData(name: String) {
+        fun deleteData() {
             Thread {
-
-            }
+                index?.let { covidInfoList!!.get(it) }?.let { db.countryDao().countryDelete(Country(it.countryName)) }
+            }.start()
+            Toast.makeText(context, "삭제완료", Toast.LENGTH_SHORT).show()
         }
     }
 
