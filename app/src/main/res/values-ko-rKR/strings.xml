@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 한국어 -->
+<resources>
+    <string name="app_name">코로나 앱</string>
+    <string name="mainTitleName">코로나 상태</string>
+
+    <string name="lbl_wholeConfirmedCount">총 확진자 수</string>
+    <string name="lbl_recentConfimedCount">최근 확진자 수</string>
+    <string name="lbl_wholeDeathCount">총 사망자 수</string>
+    <string name="lbl_recentDeathCount">최근 사망자 수</string>
+    
+    <string name="lbl_confirm">확인</string>
+    <string name="lbl_cancel">취소</string>
+
+    <string name="msg_selectCountry">추가할 나라를 선택해주세요</string>
+    <string name="msg_refreshComplete">새로고침 완료</string>
+    <string name="msg_deleteComplete">삭제 완료</string>
+</resources>

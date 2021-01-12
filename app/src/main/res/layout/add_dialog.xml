@@ -54,9 +54,9 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:hint="왼쪽버튼"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="20sp"
-            android:background="@drawable/buttonshape"
+            android:background="#FFFFFF"
             />
 
         <Button
@@ -65,9 +65,10 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:hint="오른쪽버튼"
-            android:background="#FFFFFF"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:textColor="#000000"/>
+
+            android:background="@drawable/buttonshape"/>
 
     </LinearLayout>
 

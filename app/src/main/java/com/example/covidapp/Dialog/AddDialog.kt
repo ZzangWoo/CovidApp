@@ -47,8 +47,18 @@ class AddDialog (context: Context) {
         listSpinner.adapter = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, CountryName.countryList)
 
         leftButton = dlg.findViewById(R.id.leftButton)
-        leftButton.text = "확인"
+        leftButton.text = context.getString(R.string.lbl_cancel)
         leftButton.setOnClickListener {
+
+
+
+            dlg.dismiss()
+        }
+
+        rightButton = dlg.findViewById(R.id.rightButton)
+        rightButton.text = context.getString(R.string.lbl_confirm)
+        rightButton.setOnClickListener {
+
             try {
                 GlobalScope.launch(Dispatchers.IO) {
                     db!!.countryDao().countryInsert(Country(listSpinner.selectedItem.toString()))
@@ -58,14 +68,6 @@ class AddDialog (context: Context) {
             } catch (e: Exception) {
                 Log.e("[에러발생]", e.toString())
             }
-
-
-            dlg.dismiss()
-        }
-
-        rightButton = dlg.findViewById(R.id.rightButton)
-        rightButton.text = "취소"
-        rightButton.setOnClickListener {
 
             dlg.dismiss()
         }

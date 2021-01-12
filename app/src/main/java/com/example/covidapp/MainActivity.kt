@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         addFloatingActionButton.setOnClickListener {
             val dlg = AddDialog(this)
             dlg.makeBorderCorner()
-            dlg.start("추가할 나라를 선택해주세요.")
+            dlg.start(getString(R.string.msg_selectCountry))
         }
 
         refreshImageView.setOnClickListener {
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 Thread {
                     db!!.countryDao().countryUpdate(Country(covidInfoList[0].countryName))
                 }.start()
+                Toast.makeText(this, getString(R.string.msg_refreshComplete), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -96,12 +97,13 @@ class MainActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<YesterdayCovidEntity>, response: Response<YesterdayCovidEntity>) {
                     val apiResult = response.body()
                     statsList = apiResult?.stats
+                    val updatesList = apiResult?.updates
 
                     val currentDateTime = Calendar.getInstance()
                     currentDateTime.time = Date()
                     currentDateTime.add(Calendar.DATE, -1)
 
-                    var dateFormat = SimpleDateFormat("yyyy-MM-dd", LocaleEntity.locale).format(currentDateTime.time)
+                    var dateFormat = SimpleDateFormat("yyyy-MM-dd").format(currentDateTime.time)
 
                     for (name in it) {
                         val index: Int = CountryName.countryList.indexOf(name.countryName)
@@ -110,12 +112,22 @@ class MainActivity : AppCompatActivity() {
                         val iso2 = ISO2.iso2List[index]
 
                         if (statsList!![iso2] != null) {
-                            covidInfoList.add(CovidInfo(name.countryName,
-                                dateFormat,
-                                statsList!![iso2]!!.cases,
-                                statsList!![iso2]!!.casesDelta,
-                                statsList!![iso2]!!.deaths,
-                                statsList!![iso2]!!.deathsDelta))
+                            if (updatesList!!.any { it.country == iso2}) {
+                                covidInfoList.add(CovidInfo(name.countryName,
+                                    dateFormat,
+                                    statsList!![iso2]!!.cases,
+                                    statsList!![iso2]!!.casesDelta,
+                                    statsList!![iso2]!!.deaths,
+                                    statsList!![iso2]!!.deathsDelta))
+                            } else {
+                                covidInfoList.add(CovidInfo(name.countryName,
+                                    "Not Update",
+                                    statsList!![iso2]!!.cases,
+                                    statsList!![iso2]!!.casesDelta,
+                                    statsList!![iso2]!!.deaths,
+                                    statsList!![iso2]!!.deathsDelta))
+                            }
+
                         }
 
                     }

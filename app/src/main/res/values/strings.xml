@@ -1,6 +1,16 @@
 <resources>
-    <string name="app_name">코로나 상태</string>
-    <string name="mainTitleName">코로나 상태</string>
+    <string name="app_name">World Covid19 Status</string>
+    <string name="mainTitleName">Covid19 Status</string>
 
+    <string name="lbl_wholeConfirmedCount">Total of confirmed cases</string>
+    <string name="lbl_recentConfimedCount">Recent confirmed cases</string>
+    <string name="lbl_wholeDeathCount">Total of death cases</string>
+    <string name="lbl_recentDeathCount">Recent death cases</string>
 
+    <string name="lbl_confirm">OK</string>
+    <string name="lbl_cancel">Cancel</string>
+
+    <string name="msg_selectCountry">Select the country</string>
+    <string name="msg_refreshComplete">Refresh complete</string>
+    <string name="msg_deleteComplete">Delete complete</string>
 </resources>

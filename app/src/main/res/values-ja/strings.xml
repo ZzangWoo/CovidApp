@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 일본어 -->
+<resources>
+    <string name="app_name">World Covid19 Status</string>
+    <string name="mainTitleName">Covid19 Status</string>
+
+    <string name="lbl_wholeConfirmedCount">陽性確認者数の合計</string>
+    <string name="lbl_recentConfimedCount">最近確認された事例</string>
+    <string name="lbl_wholeDeathCount">死亡者数の合計</string>
+    <string name="lbl_recentDeathCount">最近の死亡例</string>
+
+    <string name="lbl_confirm">かくにん</string>
+    <string name="lbl_cancel">キャンセル</string>
+
+    <string name="msg_selectCountry">国を選択</string>
+    <string name="msg_refreshComplete">更新 完了</string>
+    <string name="msg_deleteComplete">削除 完了</string>
+</resources>

@@ -82,9 +82,13 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val
                 val slug = Slug.slugList[index]
                 val iso2 = ISO2.iso2List[index]
 
+//                var toast = Toast.makeText(
+//                    context,
+//                    "CountryName : ${countryName}\nSlug : ${slug}\nISO2 : ${iso2}",
+//                    Toast.LENGTH_SHORT)
                 var toast = Toast.makeText(
                     context,
-                    "CountryName : ${countryName}\nSlug : ${slug}\nISO2 : ${iso2}",
+                    "Developing",
                     Toast.LENGTH_SHORT)
                 toast.show()
             }
@@ -98,7 +102,7 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val
             Thread {
                 index?.let { covidInfoList!!.get(it) }?.let { db.countryDao().countryDelete(Country(it.countryName)) }
             }.start()
-            Toast.makeText(context, "삭제완료", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.msg_deleteComplete), Toast.LENGTH_SHORT).show()
         }
     }
 
