@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="languages_array">
+        <item>English</item>
+        <item>한국어</item>
+        <item>日本語</item>
+    </string-array>
+
     <string-array name="country_array">
         <item>Afghanistan</item>
         <item>Albania</item>

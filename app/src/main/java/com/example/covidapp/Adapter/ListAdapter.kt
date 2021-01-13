@@ -16,6 +16,7 @@ import com.example.covidapp.Entity.CountryEntity.CountryName
 import com.example.covidapp.Entity.CountryEntity.ISO2
 import com.example.covidapp.Entity.CountryEntity.Slug
 import com.example.covidapp.Entity.CovidInfo
+import com.example.covidapp.Entity.CovidInfoText
 import com.example.covidapp.R
 import com.example.covidapp.Room.Database.CovidDatabase
 import com.example.covidapp.Room.Entity.Country
@@ -27,7 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val db: CovidDatabase)
+class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val db: CovidDatabase, val covidInfoText: CovidInfoText)
     : RecyclerView.Adapter<ListAdapter.CardViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListAdapter.CardViewHolder {
         var inflater = LayoutInflater.from(context)
@@ -70,6 +71,9 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val
 
         fun bind(covidInfo: CovidInfo, position: Int) {
             index = position
+
+            itemView.wholeConfirmedTextView.setText(R.string.lbl_wholeConfirmedCount)
+
             itemView.countryNameTextView.setText(covidInfo.countryName)
             itemView.updatedDateTextView.setText(covidInfo.updatedDate)
             itemView.wholeConfirmedCountTextView.setText(covidInfo.wholeConfirmedCount.toString())
@@ -96,13 +100,18 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val
             itemView.deleteImageView.setOnClickListener {
                 deleteData()
             }
+
+            itemView.wholeConfirmedTextView.setText(covidInfoText.wholeConfirmedText)
+            itemView.confirmedTextView.setText(covidInfoText.recentConfirmedText)
+            itemView.wholeDeathTextView.setText(covidInfoText.wholeDeathText)
+            itemView.deathTextView.setText(covidInfoText.recentDeathText)
         }
 
         fun deleteData() {
             Thread {
                 index?.let { covidInfoList!!.get(it) }?.let { db.countryDao().countryDelete(Country(it.countryName)) }
             }.start()
-            Toast.makeText(context, context.getString(R.string.msg_deleteComplete), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, covidInfoText.deleteComplete, Toast.LENGTH_SHORT).show()
         }
     }
 
