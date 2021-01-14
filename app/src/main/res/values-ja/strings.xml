@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 일본어 -->
 <resources>
-    <string name="app_name">World Covid19 Status</string>
-    <string name="mainTitleName">Covid19 Status</string>
+    <string name="app_name">Are you OK</string>
+    <string name="mainTitleName">コロナ 状態</string>
 
     <string name="lbl_wholeConfirmedCount">陽性確認者数の合計</string>
     <string name="lbl_recentConfimedCount">最近確認された事例</string>

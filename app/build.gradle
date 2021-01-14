@@ -8,8 +8,8 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.covidapp"
-        minSdkVersion 21
+        applicationId "com.doong.covidapp"
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -64,4 +64,7 @@ dependencies {
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+
+    // admob
+    implementation 'com.google.android.gms:play-services-ads:19.6.0'
 }

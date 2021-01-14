@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">World Covid19 Status</string>
+    <string name="app_name">Are you OK</string>
     <string name="mainTitleName">Covid19 Status</string>
 
     <string name="lbl_wholeConfirmedCount">Total of confirmed cases</string>

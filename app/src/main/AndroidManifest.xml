@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.covidapp" >
+    package="com.doong.covidapp" >
 
     <!-- 네트워크 사용에 대한 퍼미션 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,17 +12,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@android:style/Theme.NoTitleBar" >
+        android:theme="@android:style/Theme.NoTitleBar"
+        android:hardwareAccelerated="true">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2958953596451309~9499485843"></meta-data>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

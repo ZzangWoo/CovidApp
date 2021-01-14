@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 한국어 -->
 <resources>
-    <string name="app_name">코로나 앱</string>
+    <string name="app_name">친구야 괜찮니</string>
     <string name="mainTitleName">코로나 상태</string>
 
     <string name="lbl_wholeConfirmedCount">총 확진자 수</string>
