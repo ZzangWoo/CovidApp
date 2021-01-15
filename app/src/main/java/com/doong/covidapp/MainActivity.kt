@@ -74,20 +74,9 @@ class MainActivity : AppCompatActivity() {
                 LocaleEntity.locale = applicationContext.resources.configuration.locale
             }
         } else {
-//            val res = resources
-//            val dm = res.displayMetrics
-//            val conf = res.configuration
-//
-//            if (App.prefs.locale == "kr") {
-//                conf.locale = Locale.KOREA
-//            } else if (App.prefs.locale == "ja") {
-//                conf.locale = Locale.JAPAN
-//            } else {
-//                conf.locale = Locale.US
-//            }
-//            resources.updateConfiguration(conf, dm)
         }
 
+        // 핸드폰에 저장된 언어 Spinner에 반영
         if (App.prefs.locale == "ko") {
             localNumber = 1;
 //            App.prefs.locale = "kr"
@@ -108,6 +97,7 @@ class MainActivity : AppCompatActivity() {
             dlg.start(getString(R.string.msg_selectCountry))
         }
 
+        // 새로고침 버튼 클릭 이벤트
         refreshImageView.setOnClickListener {
             if (covidInfoList != null && covidInfoList.size != 0) {
                 Thread {
@@ -117,6 +107,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // 언어 선택 spinner 이벤트
         languageSelectSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 languageSelectSpinner.setSelection(localNumber)
@@ -141,27 +132,6 @@ class MainActivity : AppCompatActivity() {
 
                     LocaleManager.setNewLocale(mainContext, language)
                     recreate()
-
-//                    val res = resources
-//                    val dm = res.displayMetrics
-//                    val conf = res.configuration
-//
-//                    if (App.prefs.locale == "kr") {
-//                        conf.locale = Locale.KOREA
-//                    } else if (App.prefs.locale == "ja") {
-//                        conf.locale = Locale.JAPAN
-//                    } else {
-//                        conf.locale = Locale.US
-//                    }
-//                    resources.updateConfiguration(conf, dm)
-//
-//                    val intent = baseContext.packageManager
-//                        .getLaunchIntentForPackage(baseContext.packageName)
-//                    intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                    finish()
-//                    startActivity(intent)
-
                 }
             }
 
@@ -240,37 +210,4 @@ class MainActivity : AppCompatActivity() {
             })
         })
     }
-
-//    private fun testInitalize() {
-//        var countryList: List<Country> = arrayListOf()
-//        var covidInfoList: MutableList<CovidInfo> = mutableListOf()
-//
-//        try {
-//            adapter = ListAdapter(this, covidInfoList, db!!)
-//
-//            GlobalScope.launch(Dispatchers.Default) {
-//                countryList = db!!.countryDao().countrySelect()
-//
-//                for (country in countryList) {
-//                    covidInfoList.add(CovidInfo(country.countryName, 0, 0))
-//                }
-//
-//                Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
-//                adapter?.addItem(covidInfoList)
-//                recyclerView.adapter = adapter
-//            }
-////            countryList = db!!.countryDao().countrySelect()
-////
-////            for (country in countryList) {
-////                covidInfoList.add(CovidInfo(country.countryName, 0, 0))
-////            }
-////
-////            Log.d("[코로나 정보 넘어왔다]", "" + covidInfoList)
-////            adapter?.addItem(covidInfoList)
-////            recyclerView.adapter = adapter
-//        } catch (e: Exception) {
-//
-//        }
-//
-//    }
 }
