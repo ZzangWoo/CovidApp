@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.doong.covidapp.Adapter.ListAdapter
 import com.doong.covidapp.Dialog.AddDialog
+import com.doong.covidapp.Entity.API_Entity.SomeCovidEntity
 import com.doong.covidapp.Entity.API_Entity.WorldStats
 import com.doong.covidapp.Entity.API_Entity.YesterdayCovidEntity
 import com.doong.covidapp.Entity.CountryEntity.CountryName
@@ -20,6 +21,7 @@ import com.doong.covidapp.Entity.CovidInfo
 import com.doong.covidapp.Entity.CovidInfoText
 import com.doong.covidapp.Entity.LocaleEntity
 import com.doong.covidapp.Manager.LocaleManager
+import com.doong.covidapp.Repository.WholeCovidRepo
 import com.doong.covidapp.Repository.YesterdayCovidRepo
 import com.doong.covidapp.Room.Database.CovidDatabase
 import com.doong.covidapp.Room.Entity.Country
@@ -27,10 +29,8 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import kotlinx.coroutines.*
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
@@ -181,6 +181,8 @@ class MainActivity : AppCompatActivity() {
                             if (updatesList!!.any { it.country == iso2}) {
                                 covidInfoList.add(CovidInfo(name.countryName,
                                     dateFormat,
+                                    slug,
+                                    false,
                                     statsList!![iso2]!!.cases,
                                     statsList!![iso2]!!.casesDelta,
                                     statsList!![iso2]!!.deaths,
@@ -188,15 +190,34 @@ class MainActivity : AppCompatActivity() {
                             } else {
                                 covidInfoList.add(CovidInfo(name.countryName,
                                     "Not Update",
+                                    slug,
+                                    false,
                                     statsList!![iso2]!!.cases,
                                     statsList!![iso2]!!.casesDelta,
                                     statsList!![iso2]!!.deaths,
                                     statsList!![iso2]!!.deathsDelta))
                             }
-
                         }
-
                     }
+
+                    val builderForSome = Retrofit.Builder()
+                        .baseUrl("https://api.covid19api.com/")
+                        .addConverterFactory(GsonConverterFactory.create())
+
+                    val retrofitForSome = builderForSome.build()
+                    val repoForSome = retrofitForSome.create(WholeCovidRepo::class.java)
+
+                    currentDateTime.add(Calendar.DATE,-1)
+                    val twoDaysAgo = currentDateTime.time
+                    currentDateTime.add(Calendar.DATE,-1)
+                    val threeDaysAgo = currentDateTime.time
+
+                    val paramForSome = mutableMapOf<String, String>(
+                        "from" to SimpleDateFormat("yyyy-MM-dd").format(threeDaysAgo.time),
+                        "to" to SimpleDateFormat("yyyy-MM-dd").format(twoDaysAgo.time)
+                    )
+
+
 
                     adapter = ListAdapter(applicationContext, covidInfoList, db!!, CovidInfoText(
                         getString(R.string.lbl_wholeConfirmedCount),
