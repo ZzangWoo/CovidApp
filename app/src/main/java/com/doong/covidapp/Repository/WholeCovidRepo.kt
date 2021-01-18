@@ -8,7 +8,7 @@ import retrofit2.http.QueryMap
 
 interface WholeCovidRepo {
     @GET("/total/country/{slug}/status/confirmed")
-    suspend fun getStatus(
+    fun getStatus(
         @Path("slug") slug: String,
         @QueryMap param: Map<String, String>
     ): Call<List<SomeCovidEntity>>

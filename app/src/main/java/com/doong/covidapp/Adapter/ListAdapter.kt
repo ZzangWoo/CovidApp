@@ -78,9 +78,16 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val
 //                    context,
 //                    "CountryName : ${countryName}\nSlug : ${slug}\nISO2 : ${iso2}",
 //                    Toast.LENGTH_SHORT)
+
+//                var toast = Toast.makeText(
+//                    context,
+//                    "Developing",
+//                    Toast.LENGTH_SHORT)
+//                toast.show()
+
                 var toast = Toast.makeText(
                     context,
-                    "Developing",
+                    if(covidInfo.test) "True" else "False",
                     Toast.LENGTH_SHORT)
                 toast.show()
             }

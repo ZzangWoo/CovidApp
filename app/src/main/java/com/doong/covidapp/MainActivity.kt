@@ -34,6 +34,9 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : AppCompatActivity() {
 
@@ -161,74 +164,146 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call<YesterdayCovidEntity>, response: Response<YesterdayCovidEntity>) {
-                    val apiResult = response.body()
-                    statsList = apiResult?.stats
-                    val updatesList = apiResult?.updates
+                    GlobalScope.launch {
+                        val apiResult = response.body()
+                        statsList = apiResult?.stats
+                        val updatesList = apiResult?.updates
 
-                    val currentDateTime = Calendar.getInstance()
-                    currentDateTime.time = Date()
-                    currentDateTime.add(Calendar.DATE, -1)
+                        val currentDateTime = Calendar.getInstance()
+                        currentDateTime.time = Date()
+                        currentDateTime.add(Calendar.DATE, -1)
 
-                    var dateFormat = SimpleDateFormat("yyyy-MM-dd").format(currentDateTime.time)
+                        var dateFormat = SimpleDateFormat("yyyy-MM-dd").format(currentDateTime.time)
 
-                    for (name in it) {
-                        val index: Int = CountryName.countryList.indexOf(name.countryName)
-                        val countryName = name.countryName
-                        val slug = Slug.slugList[index]
-                        val iso2 = ISO2.iso2List[index]
+//                    val builderForSome = Retrofit.Builder()
+//                        .baseUrl("https://api.covid19api.com/")
+//                        .addConverterFactory(GsonConverterFactory.create())
+//
+//                    val retrofitForSome = builderForSome.build()
+//                    val repoForSome = retrofitForSome.create(WholeCovidRepo::class.java)
 
-                        if (statsList!![iso2] != null) {
-                            if (updatesList!!.any { it.country == iso2}) {
-                                covidInfoList.add(CovidInfo(name.countryName,
-                                    dateFormat,
-                                    slug,
-                                    false,
-                                    statsList!![iso2]!!.cases,
-                                    statsList!![iso2]!!.casesDelta,
-                                    statsList!![iso2]!!.deaths,
-                                    statsList!![iso2]!!.deathsDelta))
-                            } else {
-                                covidInfoList.add(CovidInfo(name.countryName,
-                                    "Not Update",
-                                    slug,
-                                    false,
-                                    statsList!![iso2]!!.cases,
-                                    statsList!![iso2]!!.casesDelta,
-                                    statsList!![iso2]!!.deaths,
-                                    statsList!![iso2]!!.deathsDelta))
+                        currentDateTime.add(Calendar.DATE, -1)
+                        val twoDaysAgo = currentDateTime.time
+                        currentDateTime.add(Calendar.DATE, -1)
+                        val threeDaysAgo = currentDateTime.time
+
+                        val paramForSome = mutableMapOf<String, String>(
+                            "from" to SimpleDateFormat("yyyy-MM-dd").format(threeDaysAgo.time),
+                            "to" to SimpleDateFormat("yyyy-MM-dd").format(twoDaysAgo.time)
+                        )
+
+                        GlobalScope.launch(Dispatchers.IO) {
+                            for (name in it) {
+                                val index: Int =
+                                    CountryName.countryList.indexOf(name.countryName)
+                                val countryName = name.countryName
+                                val slug = Slug.slugList[index]
+                                val iso2 = ISO2.iso2List[index]
+
+                                var data: List<SomeCovidEntity>? = null
+                                var resultForSome: List<SomeCovidEntity>? = null
+                                var testBool: Boolean = false
+
+
+                                resultForSome = getCovidData(slug, paramForSome)
+                                Log.e("Listener", "나라 정보(밖) : ${resultForSome}")
+
+
+                                if (statsList!![iso2] != null) {
+                                    if (updatesList!!.any { it.country == iso2 }) {
+                                        covidInfoList.add(
+                                            CovidInfo(
+                                                name.countryName,
+                                                dateFormat,
+                                                testBool,
+                                                statsList!![iso2]!!.cases,
+                                                statsList!![iso2]!!.casesDelta,
+                                                statsList!![iso2]!!.deaths,
+                                                statsList!![iso2]!!.deathsDelta
+                                            )
+                                        )
+                                    } else {
+                                        covidInfoList.add(
+                                            CovidInfo(
+                                                name.countryName,
+                                                "Not Update",
+                                                testBool,
+                                                statsList!![iso2]!!.cases,
+                                                statsList!![iso2]!!.casesDelta,
+                                                statsList!![iso2]!!.deaths,
+                                                statsList!![iso2]!!.deathsDelta
+                                            )
+                                        )
+                                    }
+                                }
+
                             }
+                        }.join()
+
+                        GlobalScope.launch(Dispatchers.Main) {
+                            Log.e("[UI 갱신해라]", "얍얍얍얍얍")
+                            adapter = ListAdapter(
+                                applicationContext, covidInfoList, db!!, CovidInfoText(
+                                    getString(R.string.lbl_wholeConfirmedCount),
+                                    getString(R.string.lbl_recentConfimedCount),
+                                    getString(R.string.lbl_wholeDeathCount),
+                                    getString(R.string.lbl_recentDeathCount),
+                                    getString(R.string.msg_deleteComplete)
+                                )
+                            )
+                            recyclerView.adapter = adapter
                         }
                     }
 
-                    val builderForSome = Retrofit.Builder()
-                        .baseUrl("https://api.covid19api.com/")
-                        .addConverterFactory(GsonConverterFactory.create())
 
-                    val retrofitForSome = builderForSome.build()
-                    val repoForSome = retrofitForSome.create(WholeCovidRepo::class.java)
-
-                    currentDateTime.add(Calendar.DATE,-1)
-                    val twoDaysAgo = currentDateTime.time
-                    currentDateTime.add(Calendar.DATE,-1)
-                    val threeDaysAgo = currentDateTime.time
-
-                    val paramForSome = mutableMapOf<String, String>(
-                        "from" to SimpleDateFormat("yyyy-MM-dd").format(threeDaysAgo.time),
-                        "to" to SimpleDateFormat("yyyy-MM-dd").format(twoDaysAgo.time)
-                    )
-
-
-
-                    adapter = ListAdapter(applicationContext, covidInfoList, db!!, CovidInfoText(
-                        getString(R.string.lbl_wholeConfirmedCount),
-                        getString(R.string.lbl_recentConfimedCount),
-                        getString(R.string.lbl_wholeDeathCount),
-                        getString(R.string.lbl_recentDeathCount),
-                        getString(R.string.msg_deleteComplete)
-                    ))
-                    recyclerView.adapter = adapter
                 }
             })
+
+
+        })
+    }
+
+//    suspend fun refreshAdapter() = suspendCoroutine {continuation->
+//        Log.e("[UI 갱신해라]", "얍얍얍얍얍")
+//        adapter = ListAdapter(
+//            applicationContext, covidInfoList, db!!, CovidInfoText(
+//                getString(R.string.lbl_wholeConfirmedCount),
+//                getString(R.string.lbl_recentConfimedCount),
+//                getString(R.string.lbl_wholeDeathCount),
+//                getString(R.string.lbl_recentDeathCount),
+//                getString(R.string.msg_deleteComplete)
+//            )
+//        )
+//        recyclerView.adapter = adapter
+//    }
+
+    suspend fun getCovidData(slug: String, param: Map<String, String>): List<SomeCovidEntity>? = suspendCoroutine { continuation ->
+        val builderForSome = Retrofit.Builder()
+            .baseUrl("https://api.covid19api.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+
+        val retrofitForSome = builderForSome.build()
+        val repoForSome = retrofitForSome.create(WholeCovidRepo::class.java)
+        val callForSome = repoForSome.getStatus(slug, param)
+
+        callForSome.enqueue(object: Callback<List<SomeCovidEntity>> {
+            override fun onFailure(call: Call<List<SomeCovidEntity>>, t: Throwable) {
+                Log.e("[API 에러발생]", "${t}")
+
+                continuation.resumeWithException(t)
+            }
+
+            override fun onResponse(
+                call: Call<List<SomeCovidEntity>>,
+                response: Response<List<SomeCovidEntity>>
+            ) {
+                val result = response.body()
+
+                Log.e("Listener", "나라 정보(안) : ${result}")
+
+                continuation.resume(result)
+            }
+
         })
     }
 }
