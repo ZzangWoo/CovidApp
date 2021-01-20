@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.doong.ronaapp.Adapter.ListAdapter
 import com.doong.ronaapp.Dialog.AddDialog
+import com.doong.ronaapp.Dialog.LoadingActivity
 import com.doong.ronaapp.Entity.API_Entity.SomeCovidEntity
 import com.doong.ronaapp.Entity.API_Entity.WorldStats
 import com.doong.ronaapp.Entity.API_Entity.YesterdayCovidEntity
@@ -39,6 +40,8 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : AppCompatActivity() {
+
+
 
     lateinit var mAdView : AdView
 
@@ -142,6 +145,9 @@ class MainActivity : AppCompatActivity() {
 
         // db 변동 감지 후 나라
         db!!.countryDao().countryLiveSelect().observe(this, androidx.lifecycle.Observer {
+            val loading = LoadingActivity(this)
+            loading.show()
+
             covidInfoList = mutableListOf()
             var statsList: Map<String, WorldStats>? = null
 
@@ -257,14 +263,12 @@ class MainActivity : AppCompatActivity() {
                                 )
                             )
                             recyclerView.adapter = adapter
+
+                            loading.dismiss()
                         }
                     }
-
-
                 }
             })
-
-
         })
     }
 
