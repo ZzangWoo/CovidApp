@@ -41,8 +41,6 @@ import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : AppCompatActivity() {
 
-
-
     lateinit var mAdView : AdView
 
     private var adapter: ListAdapter? = null
@@ -203,12 +201,16 @@ class MainActivity : AppCompatActivity() {
                                 var resultForSome: List<SomeCovidEntity>? = null
                                 var isUpper: Boolean = true
 
-
                                 resultForSome = getCovidData(slug, paramForSome)
                                 Log.e("Listener", "나라 정보(밖) : ${resultForSome}")
 
+
+                                // 가져온 데이터에서 DB에 있는 나라있는지 확인
                                 if (statsList!![iso2] != null) {
+                                    // 최근 데이터 있는지 확인
                                     if (updatesList!!.any { it.country == iso2 }) {
+
+
                                         if (resultForSome!!.size != 0) {
                                             val casesTwoDaysAgo: Int = resultForSome[1].cases - resultForSome[0].cases
                                             val difference: Int = statsList!![iso2]!!.casesDelta - casesTwoDaysAgo
@@ -273,6 +275,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     suspend fun getCovidData(slug: String, param: Map<String, String>): List<SomeCovidEntity>? = suspendCoroutine { continuation ->
+
+
         val builderForSome = Retrofit.Builder()
             .baseUrl("https://api.covid19api.com/")
             .addConverterFactory(GsonConverterFactory.create())

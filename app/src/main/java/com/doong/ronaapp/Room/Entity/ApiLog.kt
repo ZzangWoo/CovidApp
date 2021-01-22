@@ -6,12 +6,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "ApiLogTable")
 data class ApiLog (
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "logID")
-    var logID: Long,
-
+    @PrimaryKey
     @ColumnInfo(name = "countryName")
     var countryName: String,
+
+    @ColumnInfo(name = "difference")
+    var difference: Int,
 
     @ColumnInfo(name = "date")
     var date: String
