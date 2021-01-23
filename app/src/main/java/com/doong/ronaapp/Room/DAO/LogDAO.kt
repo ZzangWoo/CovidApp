@@ -11,6 +11,9 @@ interface LogDAO {
     @Insert(onConflict = REPLACE)
     suspend fun logInsert(apiLog: ApiLog)
 
-    @Query("SELECT COUNT(*) FROM ApiLogTable WHERE countryName = :name")
-    suspend fun logSelectCount(name: String) : Int
+    @Query("SELECT * FROM ApiLogTable WHERE countryName = :name AND date = :date")
+    suspend fun logSelectCount(name: String, date: String) : ApiLog
+
+    @Query("SELECT * FROM ApiLogTable")
+    suspend fun logSelect() : ApiLog
 }

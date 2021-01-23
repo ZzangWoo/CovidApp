@@ -11,7 +11,7 @@ data class ApiLog (
     var countryName: String,
 
     @ColumnInfo(name = "difference")
-    var difference: Int,
+    var casesTwoDaysAgo: Int,
 
     @ColumnInfo(name = "date")
     var date: String

@@ -25,6 +25,7 @@ import com.doong.ronaapp.Manager.LocaleManager
 import com.doong.ronaapp.Repository.WholeCovidRepo
 import com.doong.ronaapp.Repository.YesterdayCovidRepo
 import com.doong.ronaapp.Room.Database.CovidDatabase
+import com.doong.ronaapp.Room.Entity.ApiLog
 import com.doong.ronaapp.Room.Entity.Country
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -35,11 +36,15 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class MainActivity : AppCompatActivity() {
+
+    // 로딩 다이얼로그
+//    lateinit var loading: LoadingActivity
 
     lateinit var mAdView : AdView
 
@@ -68,7 +73,6 @@ class MainActivity : AppCompatActivity() {
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
-
 
         if (App.prefs.locale.isNullOrEmpty()) {
             // 기기 국가 설정
@@ -143,7 +147,7 @@ class MainActivity : AppCompatActivity() {
 
         // db 변동 감지 후 나라
         db!!.countryDao().countryLiveSelect().observe(this, androidx.lifecycle.Observer {
-            val loading = LoadingActivity(this)
+            var loading = LoadingActivity(this)
             loading.show()
 
             covidInfoList = mutableListOf()
@@ -201,19 +205,39 @@ class MainActivity : AppCompatActivity() {
                                 var resultForSome: List<SomeCovidEntity>? = null
                                 var isUpper: Boolean = true
 
-                                resultForSome = getCovidData(slug, paramForSome)
-                                Log.e("Listener", "나라 정보(밖) : ${resultForSome}")
-
-
                                 // 가져온 데이터에서 DB에 있는 나라있는지 확인
                                 if (statsList!![iso2] != null) {
                                     // 최근 데이터 있는지 확인
                                     if (updatesList!!.any { it.country == iso2 }) {
 
+                                        // DB에 2일전 정보 저장되어있는지 확인
+                                        // 없으면 Insert 있으면 Select
+                                        var apiLogInfo = db!!.logDao().logSelectCount(slug, paramForSome["to"]!!)
+//                                        var apiLogInfo = db!!.logDao().logSelect()
+                                        Log.e("[DB 테스트]", "${slug} 데이터 : ${apiLogInfo}")
 
-                                        if (resultForSome!!.size != 0) {
-                                            val casesTwoDaysAgo: Int = resultForSome[1].cases - resultForSome[0].cases
-                                            val difference: Int = statsList!![iso2]!!.casesDelta - casesTwoDaysAgo
+                                        var difference: Int = 0 // 2일전, 1일전 확진자 수 차이
+
+                                        if (apiLogInfo == null) {
+                                            resultForSome = getCovidData(slug, paramForSome)
+                                            Log.e("Listener", "나라 정보(밖) : ${resultForSome}")
+
+                                            if (resultForSome!!.size != 0) {
+                                                val casesTwoDaysAgo: Int = resultForSome[1].cases - resultForSome[0].cases
+                                                difference = statsList!![iso2]!!.casesDelta - casesTwoDaysAgo
+
+                                                if (difference >= 0) {
+                                                    isUpper = true
+                                                } else {
+                                                    isUpper = false
+                                                }
+
+                                                Log.e("[나라 case 차이(저장X)]", "${slug} : ${difference}\n2일전 : ${casesTwoDaysAgo} | 하루전 : ${statsList!![iso2]!!.casesDelta}")
+
+                                                db!!.logDao().logInsert(ApiLog(slug, casesTwoDaysAgo, resultForSome[1].date.substring(0, 10)))
+                                            }
+                                        } else {
+                                            difference = statsList!![iso2]!!.casesDelta - apiLogInfo.casesTwoDaysAgo
 
                                             if (difference >= 0) {
                                                 isUpper = true
@@ -221,7 +245,7 @@ class MainActivity : AppCompatActivity() {
                                                 isUpper = false
                                             }
 
-                                            Log.e("[나라 case 차이]", "${slug} : ${difference}\n2일전 : ${casesTwoDaysAgo} | 하루전 : ${statsList!![iso2]!!.casesDelta}")
+                                            Log.e("[나라 case 차이(저장O)]", "${slug} : ${difference}\n2일전 : ${apiLogInfo.casesTwoDaysAgo} | 하루전 : ${statsList!![iso2]!!.casesDelta}")
                                         }
 
                                         covidInfoList.add(
@@ -266,7 +290,9 @@ class MainActivity : AppCompatActivity() {
                             )
                             recyclerView.adapter = adapter
 
-                            loading.dismiss()
+                            if (loading != null && loading.isShowing()) {
+                                loading.dismiss()
+                            }
                         }
                     }
                 }
