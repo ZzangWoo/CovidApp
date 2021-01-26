@@ -79,17 +79,17 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val
 //                    "CountryName : ${countryName}\nSlug : ${slug}\nISO2 : ${iso2}",
 //                    Toast.LENGTH_SHORT)
 
-//                var toast = Toast.makeText(
-//                    context,
-//                    "Developing",
-//                    Toast.LENGTH_SHORT)
-//                toast.show()
-
                 var toast = Toast.makeText(
                     context,
-                    if(covidInfo.isUpper) "True" else "False",
+                    "Developing",
                     Toast.LENGTH_SHORT)
                 toast.show()
+
+//                var toast = Toast.makeText(
+//                    context,
+//                    if(covidInfo.isUpper) "True" else "False",
+//                    Toast.LENGTH_SHORT)
+//                toast.show()
             }
             itemView.statusImageView.setImageResource(if(covidInfo.isUpper) R.drawable.sad else R.drawable.happy)
             itemView.deleteImageView.setOnClickListener {
