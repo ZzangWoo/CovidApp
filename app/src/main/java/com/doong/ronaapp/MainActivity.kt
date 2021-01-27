@@ -173,6 +173,9 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call<YesterdayCovidEntity>, response: Response<YesterdayCovidEntity>) {
                     GlobalScope.launch {
+                        var isNoDataCountry: Boolean = false
+                        var noDataCountryName: String = ""
+
                         val apiResult = response.body()
                         statsList = apiResult?.stats
                         val updatesList = apiResult?.updates
@@ -272,6 +275,11 @@ class MainActivity : AppCompatActivity() {
                                             )
                                         )
                                     }
+                                } else {
+                                    db!!.countryDao().countryDelete(name)
+
+                                    isNoDataCountry = true
+                                    noDataCountryName = name.countryName
                                 }
 
                             }
@@ -289,6 +297,10 @@ class MainActivity : AppCompatActivity() {
                                 )
                             )
                             recyclerView.adapter = adapter
+
+                            if (isNoDataCountry) {
+                                Toast.makeText(this@MainActivity, "${noDataCountryName} doesn't suggest data", Toast.LENGTH_SHORT).show()
+                            }
 
                             if (loading != null && loading.isShowing()) {
                                 loading.dismiss()
