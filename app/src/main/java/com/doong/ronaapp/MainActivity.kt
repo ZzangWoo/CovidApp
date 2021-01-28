@@ -204,12 +204,15 @@ class MainActivity : AppCompatActivity() {
                                 val slug = Slug.slugList[index]
                                 val iso2 = ISO2.iso2List[index]
 
+                                Log.e("[데이터 확인]", "${countryName} : ${slug}")
+
                                 var data: List<SomeCovidEntity>? = null
                                 var resultForSome: List<SomeCovidEntity>? = null
                                 var isUpper: Boolean = true
 
                                 // 가져온 데이터에서 DB에 있는 나라있는지 확인
                                 if (statsList!![iso2] != null) {
+                                    Log.e("[가져온 데이터]", "${updatesList!!}")
                                     // 최근 데이터 있는지 확인
                                     if (updatesList!!.any { it.country == iso2 }) {
 
@@ -266,7 +269,7 @@ class MainActivity : AppCompatActivity() {
                                         covidInfoList.add(
                                             CovidInfo(
                                                 name.countryName,
-                                                "Not Update",
+                                                dateFormat,
                                                 isUpper,
                                                 statsList!![iso2]!!.cases,
                                                 statsList!![iso2]!!.casesDelta,
