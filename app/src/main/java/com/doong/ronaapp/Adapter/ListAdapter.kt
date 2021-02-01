@@ -15,6 +15,7 @@ import com.doong.ronaapp.R
 import com.doong.ronaapp.Room.Database.CovidDatabase
 import com.doong.ronaapp.Room.Entity.Country
 import kotlinx.android.synthetic.main.list_item.view.*
+import java.text.DecimalFormat
 
 class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val db: CovidDatabase, val covidInfoText: CovidInfoText)
     : RecyclerView.Adapter<ListAdapter.CardViewHolder>() {
@@ -64,10 +65,10 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val
 
             itemView.countryNameTextView.setText(covidInfo.countryName)
             itemView.updatedDateTextView.setText(covidInfo.updatedDate)
-            itemView.wholeConfirmedCountTextView.setText(covidInfo.wholeConfirmedCount.toString())
-            itemView.confirmedCountTextView.setText(covidInfo.confirmedCount.toString())
-            itemView.wholeDeathCountTextView.setText(covidInfo.wholeDeathCount.toString())
-            itemView.deathCountTextView.setText(covidInfo.deathCount.toString())
+            itemView.wholeConfirmedCountTextView.setText(intToString(covidInfo.wholeConfirmedCount))
+            itemView.confirmedCountTextView.setText(intToString(covidInfo.confirmedCount))
+            itemView.wholeDeathCountTextView.setText(intToString(covidInfo.wholeDeathCount))
+            itemView.deathCountTextView.setText(intToString(covidInfo.deathCount))
             itemView.cardView.setOnClickListener {
                 val index: Int = CountryName.countryList.indexOf(covidInfo.countryName)
                 val countryName = covidInfo.countryName
@@ -107,6 +108,11 @@ class ListAdapter (val context: Context, var covidInfoList: List<CovidInfo>, val
                 index?.let { covidInfoList!!.get(it) }?.let { db.countryDao().countryDelete(Country(it.countryName)) }
             }.start()
             Toast.makeText(context, covidInfoText.deleteComplete, Toast.LENGTH_SHORT).show()
+        }
+
+        fun intToString(num: Int): String {
+            val decimalFormat = DecimalFormat("#,###")
+            return decimalFormat.format(num)
         }
     }
 

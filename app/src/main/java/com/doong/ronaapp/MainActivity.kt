@@ -290,6 +290,10 @@ class MainActivity : AppCompatActivity() {
 
                         GlobalScope.launch(Dispatchers.Main) {
                             Log.e("[UI 갱신해라]", "얍얍얍얍얍")
+                            if (loading != null && loading.isShowing()) {
+                                loading.dismiss()
+                            }
+
                             adapter = ListAdapter(
                                 applicationContext, covidInfoList, db!!, CovidInfoText(
                                     getString(R.string.lbl_wholeConfirmedCount),
@@ -305,9 +309,7 @@ class MainActivity : AppCompatActivity() {
                                 Toast.makeText(this@MainActivity, "${noDataCountryName} doesn't suggest data", Toast.LENGTH_SHORT).show()
                             }
 
-                            if (loading != null && loading.isShowing()) {
-                                loading.dismiss()
-                            }
+
                         }
                     }
                 }
