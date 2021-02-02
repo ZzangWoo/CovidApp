@@ -306,7 +306,7 @@ class MainActivity : AppCompatActivity() {
                             recyclerView.adapter = adapter
 
                             if (isNoDataCountry) {
-                                Toast.makeText(this@MainActivity, "${noDataCountryName} doesn't suggest data", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@MainActivity, "${noDataCountryName} doesn't provide data", Toast.LENGTH_SHORT).show()
                             }
 
 
